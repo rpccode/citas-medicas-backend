@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
@@ -20,16 +20,44 @@ export class CompanyService {
     }
   }
 
-  findAll() {
-    return `This action returns all company`;
+ async findAll() {
+    try {
+      const companys =  await this.companyRepository.find()
+      return companys 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+ async findOne(id: number) {
+    try {
+      const companys =  await this.companyRepository.findOneBy({
+        id:id
+      })
+      return companys 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+ async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+    try {
+      const company =  await this.companyRepository.findOneBy({
+        id:id
+      })
+      if(!company) throw new NotFoundException('companñia no encontrada')
+
+       await this.companyRepository.update({
+        id:id
+      },updateCompanyDto)
+
+      return {
+        ok:true,
+        msg:'Compañia Modificada correctamente'
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   remove(id: number) {
