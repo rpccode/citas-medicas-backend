@@ -9,7 +9,7 @@ export class Specialty {
 
   @ManyToOne(() => Company)
   @Column({ name: 'empresaid' })
-  empresaId: number;
+  empresaId: string;
 
   @Column()
   nombre: string;

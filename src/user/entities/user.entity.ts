@@ -4,17 +4,24 @@ import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
 
 @Entity({ name: 'usuarios' })
 export class User {
-    @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => Company)
   @Column({ name: 'empresaid' })
-  empresaId: number;
+  empresaId: string;
 
-  @Column()
+  @Column('text',{
+    unique:true
+  })
   nombre: string;
 
-  @Column()
+  @Column('text',{
+    unique:true
+  })
+  correo: string;
+
+  @Column('text')
   clave: string;
 
   @Column({ default: true })

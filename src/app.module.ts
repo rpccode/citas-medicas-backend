@@ -5,6 +5,7 @@ import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { UserModule } from './user/user.module';
     CommonModule,
     ConfigurationModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

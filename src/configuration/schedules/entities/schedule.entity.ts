@@ -8,7 +8,7 @@ export class Schedule {
   
     @ManyToOne(() => Company)
     @Column({ name: 'empresaid' })
-    empresaId: number;
+    empresaId: string;
   
     @Column({ name: 'medicoid' })
     medicoId: number;
