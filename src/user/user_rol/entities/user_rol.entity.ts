@@ -10,11 +10,11 @@ export class UserRol {
   
     @ManyToOne(() => Company)
     @Column({ name: 'empresaid' })
-    empresaId: number;
+    empresaId: string;
   
     @ManyToOne(() => User)
     @Column({ name: 'usuarioid' })
-    usuarioId: number;
+    usuarioId: string;
   
     @ManyToOne(() => Rol)
     @Column({ name: 'rolid' })

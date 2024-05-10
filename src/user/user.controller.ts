@@ -13,8 +13,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(empresaId: string) {
+    return this.userService.findAll(empresaId);
   }
 
   @Get(':id')

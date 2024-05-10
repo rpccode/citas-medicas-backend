@@ -23,7 +23,7 @@ import { Company } from './company/entities/company.entity';
   ],
   controllers:[SpecialtyController,ServicesController,SchedulesController,RolController,CompanyController],
   providers:[SpecialtyService,ServicesService,SchedulesService,CompanyService, RolService],
-  exports: [SpecialtyService,ServicesService,SchedulesService,CompanyService,RolService]
+  exports: [SpecialtyService,ServicesService,SchedulesService,CompanyService,RolService,TypeOrmModule]
 
 })
 export class ConfigurationModule {}

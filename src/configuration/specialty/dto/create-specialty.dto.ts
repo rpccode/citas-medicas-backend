@@ -10,11 +10,4 @@ export class CreateSpecialtyDto {
     @IsNotEmpty()
     descripcion: string;
 
-    @IsString()
-    @IsNotEmpty()
-    usuarioRegistro: string;
-
-    @IsString()
-    @IsNotEmpty()
-    usuarioModificacion: string;
 }
