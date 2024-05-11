@@ -64,6 +64,7 @@ export class UserService {
       // Obtener todos los usuarios de la empresa
       const usuarios = await this.UserRepository.find({
         where: { activo: true, empresa: empresaId },
+        relations: ['roles']
       });
 
       // Para cada usuario, obtener sus roles
@@ -71,7 +72,7 @@ export class UserService {
         // Obtener los registros de roles para este usuario
         const userRoles = await this.UserRolRepository.find({
           where: { usuario: usuario.id },
-          relations: ['roles.Rol'],
+          relations: ['rol'],
         });
 
         // Agregar los roles al usuario
@@ -97,6 +98,7 @@ export class UserService {
         );
       const userRoles = await this.UserRolRepository.find({
         where: { usuario: user.id },
+        relations: ['rol']
       });
       if (!userRoles)
         throw new BadRequestException('El usuario no tiene roles asignados');

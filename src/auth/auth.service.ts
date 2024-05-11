@@ -26,12 +26,13 @@ export class AuthService {
   ) {}
   async create(createAuthDto: CreateAuthDto) {
     try {
+      const { correoElectronico, telefono, nombreEmpresa } = createAuthDto;
       const company = await this.companyRepository.findOne({
-        where: {
-          correoElectronico: createAuthDto.correoElectronico,
-          telefono: createAuthDto.telefono,
-          nombreEmpresa: createAuthDto.nombreEmpresa,
-        },
+        where: [
+          { correoElectronico: correoElectronico },
+          { telefono: telefono },
+          { nombreEmpresa: nombreEmpresa },
+        ],
       });
       if (company)
         throw new BadRequestException(
@@ -46,7 +47,6 @@ export class AuthService {
         otrosDetalles: createAuthDto.otrosDetalles,
       });
 
-      await this.companyRepository.save(cp);
 
       const rol = await this.RolRepository.findOne({
         where: {
@@ -63,17 +63,24 @@ export class AuthService {
       });
 
       if (user) throw new BadRequestException('El usuario ya existe');
+      await this.companyRepository.save(cp);
 
-      const newUser = await this.UserRepository.create({});
-      // console.log(newUser);
+      const newUser = await this.UserRepository.create({
+        nombre: createAuthDto.nombre,
+        correo: createAuthDto.correo,
+        clave: createAuthDto.clave,
+        empresa: cp.id,
+        activo: true,
+      });
+      await this.UserRepository.save(newUser);
 
-      // const rolUser = await this.UserRolRepository.create({
-      //   rolId: rol.id,
-      //   empresaId: cp.id,
-      //   usuarioId: newUser.id,
-      //   activo: true,
-      // });
-
+      const rolUser = await this.UserRolRepository.create({
+        rol: rol.id,
+        empresa: cp.id,
+        usuario: newUser.id,
+        activo: true,
+      });
+      this.UserRolRepository.save(rolUser);
       return {
         ok: true,
         msg: '',

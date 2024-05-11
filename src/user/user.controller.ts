@@ -12,8 +12,8 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  findAll(empresaId: string) {
+  @Get('all/:id')
+  findAll(@Param('id', ParseUUIDPipe) empresaId: string) {
     return this.userService.findAll(empresaId);
   }
 
