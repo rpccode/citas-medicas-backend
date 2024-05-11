@@ -25,6 +25,9 @@ export class User {
   @Column('text')
   clave: string;
 
+  @Column('text')
+  token: string;
+
   @Column({ default: true })
   activo: boolean;
 

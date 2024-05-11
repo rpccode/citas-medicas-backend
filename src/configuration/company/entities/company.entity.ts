@@ -5,16 +5,16 @@ export class Company {
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
-    @Column({ name: 'nombre_empresa' })
+    @Column({ name: 'nombre_empresa', unique: true})
     nombreEmpresa: string;
   
     @Column({ nullable: true })
     direccion: string;
   
-    @Column({ name: 'telefono' })
+    @Column({ name: 'telefono', unique: true})
     telefono: string;
   
-    @Column({ name: 'correo_electronico' })
+    @Column({ name: 'correo_electronico', unique: true })
     correoElectronico: string;
   
     @Column({ type: 'bytea', nullable: true })
