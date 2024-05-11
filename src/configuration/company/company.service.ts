@@ -8,7 +8,7 @@ import { LoggerClass } from 'src/common/helpers/logger.class';
 
 @Injectable()
 export class CompanyService {
-   private readonly logger = new LoggerClass('CompanyService');
+  private readonly logger = new LoggerClass('CompanyService');
   constructor(
     @InjectRepository(Company)
     private companyRepository: Repository<Company>,
@@ -18,9 +18,9 @@ export class CompanyService {
       const company = await this.companyRepository.create(createCompanyDto);
       await this.companyRepository.save(company);
       return {
-        ok:true,
-        msg:'Compañia creada con exito'
-      }
+        ok: true,
+        msg: 'Compañia creada con exito',
+      };
     } catch (error) {
       // console.log(error);
       this.logger.handleDBExceptions(error);

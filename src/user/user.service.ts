@@ -23,14 +23,16 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const { correo, nombre, empresaId, rolId } = createUserDto;
-      const exit = await this.UserRepository.findOneBy({
-        correo: correo,
-        nombre: nombre,
-        empresaId: empresaId,
-      });
-      if (!exit) throw new BadRequestException('El usuario y/o E-mail existe');
+      const { correo, nombre, empresa, rolId } = createUserDto;
+
+      const exit = await this.UserRepository.findOneBy([
+        { correo: correo,empresa: empresa  },
+        { nombre: nombre,empresa: empresa  },
+      ])
+ 
+      if (exit ) throw new BadRequestException(`El usuario y/o E-mail existe `); ;
       const user = await this.UserRepository.create(createUserDto);
+      
       const rol = await this.RolRepository.findOneBy({
         id: rolId,
         activo: true,
@@ -39,17 +41,14 @@ export class UserService {
         throw new BadRequestException(
           'El rol no existe o no se encuentra activo',
         );
-      const userRol = await this.UserRolRepository.create({});
-      userRol.usuarioId = user.id;
-      userRol.rolId = rol.id;
-      userRol.empresaId = user.empresaId;
+      await  this.UserRepository.save(user)
+      const userRol = await this.UserRolRepository.create({
+        usuario: user.id,
+        rol: rol.id,
+        empresa: user.empresa,
+      });
 
-      Promise.all([
-        this.UserRepository.save(user),
-        this.UserRolRepository.save(userRol),
-      ]);
-      if (!user || !userRol)
-        throw new BadRequestException('No se pudo crear el usuario');
+      await  this.UserRolRepository.save(userRol)
 
       return {
         ok: true,
@@ -64,15 +63,15 @@ export class UserService {
     try {
       // Obtener todos los usuarios de la empresa
       const usuarios = await this.UserRepository.find({
-        where: { activo: true, empresaId: empresaId },
+        where: { activo: true, empresa: empresaId },
       });
 
       // Para cada usuario, obtener sus roles
       for (const usuario of usuarios) {
         // Obtener los registros de roles para este usuario
         const userRoles = await this.UserRolRepository.find({
-          where: { usuarioId: usuario.id },
-          relations: ['roles.Rol'], 
+          where: { usuario: usuario.id },
+          relations: ['roles.Rol'],
         });
 
         // Agregar los roles al usuario
@@ -90,19 +89,20 @@ export class UserService {
       const user = await this.UserRepository.findOneBy({
         id: id,
         activo: true,
-        empresaId: id,
+        empresa: id,
       });
       if (!user)
         throw new BadRequestException(
           'El usuario no existe o no se encuentra activo',
         );
-        const userRoles = await this.UserRolRepository.find({
-          where: { usuarioId: user.id },
-        });
-        if (!userRoles) throw new BadRequestException('El usuario no tiene roles asignados');
+      const userRoles = await this.UserRolRepository.find({
+        where: { usuario: user.id },
+      });
+      if (!userRoles)
+        throw new BadRequestException('El usuario no tiene roles asignados');
 
-        // Agregar los roles al usuario
-        user.roles = userRoles;
+      // Agregar los roles al usuario
+      user.roles = userRoles;
 
       return user;
     } catch (error) {

@@ -21,7 +21,7 @@ export class CreateUserDto {
 
   @IsUUID()
   @IsNotEmpty()
-  empresaId: string;
+  empresa: string;
 
   @IsNumber()
   @IsNotEmpty()

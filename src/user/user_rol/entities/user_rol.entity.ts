@@ -9,16 +9,16 @@ export class UserRol {
     id: number;
   
     @ManyToOne(() => Company)
-    @Column({ name: 'empresaid' })
-    empresaId: string;
+    @Column({ name: 'empresaId' })
+    empresa: string;
   
     @ManyToOne(() => User)
-    @Column({ name: 'usuarioid' })
-    usuarioId: string;
+    @Column({ name: 'usuarioId' })
+    usuario: string;
   
     @ManyToOne(() => Rol)
-    @Column({ name: 'rolid' })
-    rolId: number;
+    @Column({ name: 'rolId' })
+    rol: number;
   
     @Column({ default: true })
     activo: boolean;
